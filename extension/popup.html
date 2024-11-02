@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Page Summarizer</title>
+    <style>
+      body {
+        width: 300px;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+      }
+      button {
+        margin: 10px 0;
+        padding: 8px 16px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      #url,
+      #summary {
+        margin: 10px 0;
+        word-wrap: break-word;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="url"></div>
+    <button id="startButton">Start</button>
+    <div id="summary"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
