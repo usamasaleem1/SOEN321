@@ -2,7 +2,7 @@
 
 A Chrome extension that uses OpenAI's GPT API to generate concise summaries of web pages. Simply click the extension icon, press "Start," and get an AI-powered summary of your current webpage.
 
-![Extension Demo](demo.gif)
+<img src="demo.gif" width="200">
 
 ## Features
 
@@ -28,7 +28,7 @@ cd webpage-summarizer
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable "Developer mode" in the top right corner
    - Click "Load unpacked"
-   - Select the directory containing the extension files
+   - Select the directory containing the extension files (extension). Literally just select the folder, not any specific file.
 
 ### Configuration
 
@@ -82,16 +82,6 @@ webpage-summarizer/
 - No data is stored or transmitted except to generate the summary
 - The extension only requests necessary permissions
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 ## Development
 
 To modify the extension:
@@ -100,12 +90,3 @@ To modify the extension:
 2. Go to `chrome://extensions/`
 3. Click the refresh icon on your extension
 4. Test the updated functionality
-
-### Building for Production
-
-For production deployment:
-
-1. Remove any console.log statements
-2. Minify JavaScript files
-3. Optimize images
-4. Update version number in manifest.json
