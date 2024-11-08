@@ -1,12 +1,13 @@
 {
     "manifest_version": 3,
-    "name": "Web Page Summarizer",
+    "name": "Terms and Conditions Analyzer SOEN321",
     "version": "1.0",
-    "description": "Summarizes web pages using OpenAI API",
+    "description": "Analyze terms and conditions using AI",
     "permissions": [
         "activeTab",
         "storage",
-        "scripting"
+        "scripting",
+        "tabs"
     ],
     "host_permissions": [
         "<all_urls>"
