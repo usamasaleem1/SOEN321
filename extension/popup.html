@@ -29,12 +29,38 @@
       .error {
         color: red;
       }
+      .response-container {
+        margin: 15px 0;
+        line-height: 1.4;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .agree-btn {
+        background-color: #4caf50;
+      }
+
+      .disagree-btn {
+        background-color: #f44336;
+      }
+
+      .hidden {
+        display: none;
+      }
     </style>
   </head>
   <body>
     <div id="url"></div>
-    <button id="startButton">Start</button>
-    <div id="summary"></div>
+    <button id="startButton">Analyze Terms</button>
+    <div id="summary" class="response-container"></div>
+    <div id="actionButtons" class="action-buttons hidden">
+      <button id="agreeButton" class="agree-btn">Accept Terms</button>
+      <button id="disagreeButton" class="disagree-btn">Decline</button>
+    </div>
     <script src="popup.js"></script>
   </body>
 </html>
