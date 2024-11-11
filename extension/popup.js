@@ -5,7 +5,67 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentUrl = tabs[0].url;
     document.getElementById("url").textContent = `Current URL: ${currentUrl}`;
     loadSummaryFromStorage(currentUrl);
+    loadPolicyLinksFromStorage(currentUrl);
   });
+
+  // Function to find and store policy links
+  async function findPolicyLinks() {
+    console.log("Searching for Terms & Conditions or Privacy Policy links...");
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+
+    const [{ result }] = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () => {
+        const links = Array.from(document.querySelectorAll("a"));
+        const policyLinks = links
+          .filter((link) => {
+            const href = link.href.toLowerCase();
+            const text = link.textContent.toLowerCase();
+            return (
+              text.includes("terms") ||
+              text.includes("privacy") ||
+              text.includes("policy") ||
+              href.includes("terms") ||
+              href.includes("privacy") ||
+              href.includes("policy")
+            );
+          })
+          .map((link) => link.href); // Collect the href of the matching links
+        return policyLinks;
+      },
+    });
+
+    // Store the links in local storage
+    const currentUrl = (
+      await chrome.tabs.query({ active: true, currentWindow: true })
+    )[0].url;
+    chrome.storage.local.set({ [`policyLinks_${currentUrl}`]: result });
+
+    return result;
+  }
+
+  // Function to load and display stored policy links
+  function loadPolicyLinksFromStorage(url) {
+    console.log("Loading policy links from storage...");
+    chrome.storage.local.get(`policyLinks_${url}`, function (data) {
+      const links = data[`policyLinks_${url}`];
+      const summaryDiv = document.getElementById("summary");
+
+      if (links && links.length > 0) {
+        summaryDiv.innerHTML += `<br><strong>Stored Policy Links:</strong><br><ul>${links
+          .map(
+            (link) => `<li><a href="${link}" target="_blank">${link}</a></li>`
+          )
+          .join("")}</ul>`;
+        console.log("Policy links loaded and displayed");
+      } else {
+        console.log("No policy links found in storage for this URL");
+      }
+    });
+  }
 
   async function checkForAgreementButtons() {
     console.log("Checking for agreement buttons...");
@@ -64,6 +124,17 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
+        // Find policy links first
+        const policyLinks = await findPolicyLinks();
+
+        if (policyLinks.length === 0) {
+          // If no policy links found, do not proceed with GPT analysis
+          summaryDiv.innerHTML = "No relevant policy links found on this page.";
+          summaryDiv.classList.add("error");
+          return;
+        }
+
+        // Proceed with GPT analysis only if policy links are found
         const { apiKey } = await chrome.storage.sync.get("apiKey");
         if (!apiKey)
           throw new Error(
@@ -108,6 +179,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const summary = data.choices[0].message.content;
         summaryDiv.innerHTML = summary.replace(/\n/g, "<br>");
         chrome.storage.local.set({ [summaryKey]: summary });
+
+        // Add found policy links to the summary
+        if (policyLinks.length > 0) {
+          console.log("Found policy links:", policyLinks);
+          summaryDiv.innerHTML += `<br><strong>Policy Links:</strong><br><ul>${policyLinks
+            .map(
+              (link) => `<li><a href="${link}" target="_blank">${link}</a></li>`
+            )
+            .join("")}</ul>`;
+        } else {
+          summaryDiv.innerHTML += "<br>No policy links found on this page.";
+        }
 
         const hasAgreementOptions = await checkForAgreementButtons();
         if (hasAgreementOptions) {
