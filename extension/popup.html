@@ -1,144 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web Page Summarizer</title>
+    <title>Terms and Conditions Policy Analyzer</title>
     <style>
-      body {
-        width: 350px;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        color: #333;
-        background-color: #f7f7f7;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      h1 {
-        font-size: 18px;
-        margin-bottom: 20px;
-        text-align: center;
-        color: #4caf50;
-      }
-
-      #url {
-        font-size: 14px;
-        color: #555;
-        margin-bottom: 15px;
-      }
-
-      button {
-        width: 100%;
-        padding: 12px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        transition: background-color 0.3s;
-      }
-
-      button:hover {
-        background-color: #45a049;
-      }
-
-      #startButton {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      #reAnalyzeButton {
-        background-color: #f39c12;
-        color: white;
-      }
-
-      #actionButtons button {
-        width: 48%;
-        display: inline-block;
-      }
-
-      #actionButtons .agree-btn {
-        background-color: #4caf50;
-      }
-
-      #actionButtons .disagree-btn {
-        background-color: #f44336;
-      }
-
-      .response-container {
-        margin-top: 15px;
-        padding: 15px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        font-size: 14px;
-        line-height: 1.6;
-      }
-
-      .error {
-        color: red;
-        font-weight: bold;
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      .policy-links ul {
-        padding-left: 20px;
-        list-style-type: square;
-      }
-
-      .policy-links a {
-        text-decoration: none;
-        color: #4caf50;
-      }
-
-      .policy-links a:hover {
-        text-decoration: underline;
-      }
-
-      .action-buttons {
-        display: flex;
-        gap: 10px;
-        justify-content: space-between;
-        margin-top: 15px;
-      }
-
-      #url {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      .overall-score {
-        font-weight: bold;
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 20px;
-      }
-
-      .stored-policy-links {
-        margin-top: 20px;
-      }
+        body {
+            width: 350px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.0);
+        }
+        
+        h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #4caf50;
+        }
+        
+        #url {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+            color: white;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        #startButton {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        #reAnalyzeButton {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        #actionButtons button {
+            width: 48%;
+            display: inline-block;
+        }
+        
+        #actionButtons .agree-btn {
+            background-color: #4caf50;
+        }
+        
+        #actionButtons .disagree-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .response-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .policy-links ul {
+            padding-left: 20px;
+            list-style-type: square;
+        }
+        
+        .policy-links a {
+            text-decoration: none;
+            color: #4caf50;
+        }
+        
+        .policy-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        #url {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .overall-score {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .stored-policy-links {
+            margin-top: 20px;
+        }
     </style>
-  </head>
-  <body>
-    <h1>Web Page Summarizer</h1>
+</head>
+
+<body>
+    <h1>Terms and Conditions Policy Analyzer</h1>
     <div id="url"></div>
-    <button id="startButton">Analyze Terms</button>
+    <button id="startButton" class="hidden">Analyze Terms</button>
+    <button id="reAnalyzeButton" class="re-analyze-btn hidden">
+    Re-Analyze Page
+  </button>
     <div id="summary" class="response-container">
-      <div id="overallScore" class="overall-score hidden"></div>
+        <div id="overallScore" class="overall-score hidden"></div>
     </div>
     <div id="storedPolicyLinks" class="stored-policy-links hidden"></div>
     <div id="actionButtons" class="action-buttons hidden">
-      <button id="agreeButton" class="agree-btn">Accept Terms</button>
-      <button id="disagreeButton" class="disagree-btn">Decline</button>
+        <button id="agreeButton" class="agree-btn hidden">Accept Terms</button>
+        <button id="disagreeButton" class="disagree-btn hidden">Decline</button>
     </div>
-    <button id="reAnalyzeButton" class="re-analyze-btn hidden">
-      Re-Analyze Page
-    </button>
     <script src="popup.js"></script>
-  </body>
+</body>
+
 </html>
