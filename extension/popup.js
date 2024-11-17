@@ -10,14 +10,27 @@ document.addEventListener("DOMContentLoaded", async function () {
   const actionButtons = document.getElementById("actionButtons");
   const urlElement = document.getElementById("url");
 
-  startButton.classList.remove("hidden");
-
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const currentUrl = tab.url;
   urlElement.textContent = `Current URL: ${currentUrl}`;
 
-  // Check and load policy links
-  await loadAndDisplayPolicyLinks(currentUrl);
+  // Check if the URL contains relevant keywords
+  const keywords = ["terms", "privacy", "policy", "conditions"];
+  const containsKeywords = keywords.some((keyword) =>
+    currentUrl.toLowerCase().includes(keyword)
+  );
+
+  if (!containsKeywords) {
+    // If no keywords found, display N/A for all points
+    displayNAForAllPoints();
+    findPolicyLinks();
+    await loadAndDisplayPolicyLinks(currentUrl);
+    return;
+  } else {
+    policyDiv.classList.add("hidden");
+  }
+
+  startButton.classList.remove("hidden");
 
   // Check if a summary exists
   chrome.storage.local.get(`summary_${currentUrl}`, function (data) {
@@ -38,27 +51,44 @@ document.addEventListener("DOMContentLoaded", async function () {
     .getElementById("agreeButton")
     .addEventListener("click", agreeToPolicy);
 
+  async function displayNAForAllPoints() {
+    document.getElementById("startButton").classList.add("hidden");
+    document.getElementById("reAnalyzeButton").classList.add("hidden");
+    const points = [
+      "Data Collection",
+      "Data Usage",
+      "Data Sharing",
+      "Data Selling",
+      "Opt-out Options",
+      "Data Security",
+      "Data Deletion",
+      "Policy Clarity",
+    ];
+    const naSummary = points
+      .map(
+        (point) =>
+          `<strong>${point}:</strong> <span style="color: gray;">N/A</span>`
+      )
+      .join("<br>");
+    summaryDiv.innerHTML = naSummary;
+  }
+
   async function loadAndDisplayPolicyLinks(url) {
     console.log("Loading and displaying policy links...");
-    // Check if policy links are in storage
     chrome.storage.local.get(`policyLinks_${url}`, async function (data) {
       let links = data[`policyLinks_${url}`];
       if (!links || links.length === 0) {
-        // If not found in storage, find policy links on the page
         links = await findPolicyLinks();
         chrome.storage.local.set({ [`policyLinks_${url}`]: links });
       }
-      // Update UI
       if (links.length > 0) {
         policyDiv.innerHTML = `<br><strong>Policy Links:</strong><br><ul>${links
           .map(
             (link) => `<li><a href="${link}" target="_blank">${link}</a></li>`
           )
           .join("")}</ul>`;
-        console.log("Policy links displayed");
       } else {
         policyDiv.innerHTML = "<br>No policy links found on this page.";
-        console.log("No policy links found.");
       }
     });
   }
@@ -82,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async function () {
               href.includes("policy")
             );
           })
-          .map((link) => link.href); // Collect the href of the matching links
+          .map((link) => link.href);
       },
     });
     return result;
@@ -98,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     try {
       const storedSummary = await chrome.storage.local.get(summaryKey);
       if (storedSummary[summaryKey]) {
-        summaryDiv.innerHTML = storedSummary[summaryKey].replace(/\n/g, "<br>");
+        summaryDiv.innerHTML = storedSummary[summaryKey];
         actionButtons.classList.remove("hidden");
         reAnalyzeButton.classList.remove("hidden");
         return;
@@ -116,19 +146,19 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
 
       const prompt = `Please analyze these terms and conditions / privacy policies and provide ONLY AND ONLY a score out of 5 for EACH of the following points:
-        - Data Collection (/5)
-        - Data Usage (/5)
-        - Data Sharing (/5)
-        - Data Selling (/5)
-        - Opt-out Options (/5)
-        - Data Security (/5)
-        - Data Deletion (/5)
-        - Policy Clarity (/5)
-
-      Afterwards, display each score again but for each rating, provide a single, brief sentence for each score explaining why you gave it that specific score, under the score.  
-
-      Analyze the following policy:
-      ${result}`;
+          - Data Collection (/5)
+          - Data Usage (/5)
+          - Data Sharing (/5)
+          - Data Selling (/5)
+          - Opt-out Options (/5)
+          - Data Security (/5)
+          - Data Deletion (/5)
+          - Policy Clarity (/5)
+  
+        Afterwards, display each score again but for each rating, provide a single, brief sentence for each score explaining why you gave it that specific score, under the score.  
+  
+        Analyze the following policy:
+        ${result}`;
 
       const openaiResponse = await fetch(
         "https://api.openai.com/v1/chat/completions",
@@ -148,9 +178,28 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = await openaiResponse.json();
       if (data.error) throw new Error(data.error.message);
 
-      const summary = data.choices[0].message.content;
-      summaryDiv.innerHTML = summary.replace(/\n/g, "<br>");
-      chrome.storage.local.set({ [summaryKey]: summary });
+      const rawSummary = data.choices[0].message.content;
+      console.log("Raw Summary:", rawSummary); // Debugging
+
+      const scoreRegex = /([\w\s]+):\s*(\d\/5)/g;
+      const colorMapping = {
+        "5/5": "green",
+        "4/5": "blue",
+        "3/5": "orange",
+        "2/5": "purple",
+        "1/5": "red",
+      };
+
+      const styledSummary = rawSummary.replace(
+        scoreRegex,
+        (match, criterion, score) => {
+          const color = colorMapping[score] || "black";
+          return `<strong>${criterion}:</strong> <span style="color: ${color};">${score}</span>`;
+        }
+      );
+
+      summaryDiv.innerHTML = styledSummary.replace(/\n/g, "<br>");
+      chrome.storage.local.set({ [summaryKey]: styledSummary });
       actionButtons.classList.remove("hidden");
     } catch (error) {
       console.error("Error occurred:", error);
