@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web Page Summarizer</title>
+    <title>Privacy Analyzer</title>
     <style>
       body {
         width: 350px;
@@ -86,9 +86,22 @@
         display: none;
       }
 
+      .policy-links {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        overflow-wrap: break-word;
+      }
+
       .policy-links ul {
         padding-left: 20px;
         list-style-type: square;
+      }
+
+      .policy-links li {
+        margin-bottom: 10px; /* Added whitespace between links */
       }
 
       .policy-links a {
@@ -118,20 +131,19 @@
         color: #333;
         margin-bottom: 20px;
       }
-
-      .stored-policy-links {
-        margin-top: 20px;
-      }
     </style>
   </head>
   <body>
-    <h1>Web Page Summarizer</h1>
+    <h1>Privacy Analyzer</h1>
     <div id="url"></div>
     <button id="startButton">Analyze Terms</button>
     <div id="summary" class="response-container">
-      <div id="overallScore" class="overall-score hidden"></div>
+      <div id="overallScore" class="overall-score"></div>
     </div>
-    <div id="storedPolicyLinks" class="stored-policy-links hidden"></div>
+    <div id="storedPolicyLinks" class="policy-links">
+      <strong>Policy Links:</strong>
+      <ul id="policyLinksList"></ul>
+    </div>
     <div id="actionButtons" class="action-buttons hidden">
       <button id="agreeButton" class="agree-btn">Accept Terms</button>
       <button id="disagreeButton" class="disagree-btn">Decline</button>
