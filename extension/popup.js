@@ -70,7 +70,10 @@ document.addEventListener("DOMContentLoaded", async function () {
           `<strong>${point}:</strong> <span style="color: gray;">N/A</span>`
       )
       .join("<br>");
-    summaryDiv.innerHTML = naSummary;
+    summaryDiv.innerHTML =
+      naSummary +
+      `<p style="color:red;"> We cannot analyze this page since this is not a document related to privacy policies or terms & conditions.
+      Please refer to one of the policy links listed below instead! </p>`;
   }
 
   async function loadAndDisplayPolicyLinks(url) {
