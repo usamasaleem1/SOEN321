@@ -54,19 +54,6 @@
         color: white;
       }
 
-      #actionButtons button {
-        width: 48%;
-        display: inline-block;
-      }
-
-      #actionButtons .agree-btn {
-        background-color: #4caf50;
-      }
-
-      #actionButtons .disagree-btn {
-        background-color: #f44336;
-      }
-
       .response-container {
         margin-top: 15px;
         padding: 15px;
@@ -101,7 +88,7 @@
       }
 
       .policy-links li {
-        margin-bottom: 10px; /* Added whitespace between links */
+        margin-bottom: 10px;
       }
 
       .policy-links a {
@@ -137,16 +124,10 @@
     <h1>Privacy Analyzer</h1>
     <div id="url"></div>
     <button id="startButton">Analyze Terms</button>
-    <div id="summary" class="response-container">
-      <div id="overallScore" class="overall-score"></div>
-    </div>
+    <div id="summary" class="response-container"></div>
     <div id="storedPolicyLinks" class="policy-links">
       <strong>Policy Links:</strong>
       <ul id="policyLinksList"></ul>
-    </div>
-    <div id="actionButtons" class="action-buttons hidden">
-      <button id="agreeButton" class="agree-btn">Accept Terms</button>
-      <button id="disagreeButton" class="disagree-btn">Decline</button>
     </div>
     <button id="reAnalyzeButton" class="re-analyze-btn hidden">
       Re-Analyze Page

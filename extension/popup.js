@@ -124,7 +124,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   async function startAnalysis() {
     console.log("Start button clicked");
     summaryDiv.textContent = "Analyzing page...";
-    actionButtons.classList.add("hidden");
 
     const summaryKey = `summary_${currentUrl}`;
 
@@ -132,7 +131,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const storedSummary = await chrome.storage.local.get(summaryKey);
       if (storedSummary[summaryKey]) {
         summaryDiv.innerHTML = storedSummary[summaryKey];
-        actionButtons.classList.remove("hidden");
         reAnalyzeButton.classList.remove("hidden");
         return;
       }
@@ -203,7 +201,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       summaryDiv.innerHTML = styledSummary.replace(/\n/g, "<br>");
       chrome.storage.local.set({ [summaryKey]: styledSummary });
-      actionButtons.classList.remove("hidden");
     } catch (error) {
       console.error("Error occurred:", error);
       summaryDiv.textContent = `Error: ${error.message}`;
@@ -216,7 +213,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     reAnalyzeButton.classList.add("hidden");
     startButton.classList.remove("hidden");
     summaryDiv.textContent = "";
-    actionButtons.classList.add("hidden");
     startAnalysis();
   }
 
@@ -250,7 +246,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const summary = data[`summary_${url}`];
       if (summary) {
         summaryDiv.innerHTML = summary.replace(/\n/g, "<br>");
-        actionButtons.classList.remove("hidden");
         reAnalyzeButton.classList.remove("hidden");
         console.log("Summary loaded and displayed");
       } else {
