@@ -1,4 +1,4 @@
-# Web Page Summarizer Chrome Extension
+# Terms of Service with AI Chrome Extension
 
 A Chrome extension that uses OpenAI's GPT API to generate concise summaries of web pages. Simply click the extension icon, press "Start," and get an AI-powered summary of your current webpage.
 
