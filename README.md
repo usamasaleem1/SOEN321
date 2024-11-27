@@ -2,7 +2,9 @@
 
 A Chrome extension that uses OpenAI's GPT API to generate concise summaries of web pages. Simply click the extension icon, press "Start," and get an AI-powered summary of your current webpage.
 
-<img src="demo.gif" width="200">
+https://github.com/user-attachments/assets/abf325ca-5c58-4a69-8f99-64711e27cb62
+
+
 
 ## Features
 
